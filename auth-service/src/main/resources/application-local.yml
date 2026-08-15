@@ -21,5 +21,10 @@ springdoc:
   api-docs:
     path: /api
 
+myrctc:
+  auth:
+    token:
+      expiration-duration: 120000
+      secret: r3pl4c3M3InPr0d
 server:
   port: 8081
