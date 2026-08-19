@@ -23,13 +23,31 @@ public class UserServiceImpl implements UserService{
     }
 
     @NonNull
+    @Override
+    public UserDto registerUser(@NonNull UserDto userDto) {
+        UserEntity userEntity = userRepository.save(convertUserDtoToUserEntity(userDto));
+        return convertUserEntityToUserDto(userEntity); //to remove the password
+    }
+
+    @NonNull
     private UserDto convertUserEntityToUserDto(@NonNull final UserEntity userEntity) {
 //      password is deliberately ignored here
         return UserDto.builder()
                 .name(userEntity.getName())
                 .surname(userEntity.getSurname())
                 .age(userEntity.getAge())
-                .email(userEntity.getEmail())
+                .email(new Email(userEntity.getEmail()))
+                .build();
+    }
+
+    @NonNull
+    private UserEntity convertUserDtoToUserEntity(@NonNull final UserDto userDto) {
+        return UserEntity.builder()
+                .name(userDto.getName())
+                .surname(userDto.getSurname())
+                .password(userDto.getPassword())
+                .age(userDto.getAge())
+                .email(userDto.getEmail().email())
                 .build();
     }
 }

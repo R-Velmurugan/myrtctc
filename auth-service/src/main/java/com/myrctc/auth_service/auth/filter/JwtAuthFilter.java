@@ -1,4 +1,4 @@
-package com.myrctc.auth_service.auth;
+package com.myrctc.auth_service.auth.filter;
 
 import com.myrctc.auth_service.auth.token.Token;
 import com.myrctc.auth_service.auth.token.service.TokenService;
