@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface UserService {
     @NonNull
     Optional<UserDto> getUserByEmail(@NonNull final Email email);
+    @NonNull
+    UserDto registerUser(@NonNull final UserDto userDto);
 }
