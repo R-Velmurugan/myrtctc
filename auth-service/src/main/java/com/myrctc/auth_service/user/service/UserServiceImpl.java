@@ -6,6 +6,7 @@ import com.myrctc.auth_service.user.UserEntity;
 import com.myrctc.auth_service.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,17 +15,18 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @NonNull
     @Override
-    public Optional<UserDto> getUserByEmail(@NonNull Email email) {
+    public Optional<UserDto> getUserByEmail(@NonNull final Email email) {
         return userRepository.findUserEntitiesByEmail(email)
                 .map(this::convertUserEntityToUserDto);
     }
 
     @NonNull
     @Override
-    public UserDto registerUser(@NonNull UserDto userDto) {
+    public UserDto registerUser(@NonNull final UserDto userDto) {
         UserEntity userEntity = userRepository.save(convertUserDtoToUserEntity(userDto));
         return convertUserEntityToUserDto(userEntity); //to remove the password
     }
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService{
         return UserEntity.builder()
                 .name(userDto.getName())
                 .surname(userDto.getSurname())
-                .password(userDto.getPassword())
+                .password(passwordEncoder.encode(userDto.getPassword()))
                 .age(userDto.getAge())
                 .email(userDto.getEmail().email())
                 .build();
