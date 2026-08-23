@@ -61,6 +61,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    @Override
+    protected boolean shouldNotFilter(@NonNull final HttpServletRequest request) {
+        final String uri = request.getRequestURI();
+        return uri.startsWith("/login") || uri.startsWith("/register") || uri.contains("swagger");
+    }
+
     private boolean isAuthHeaderPresentAndValid(@NonNull final HttpServletRequest request){
         final String authHeader = request.getHeader(AUTH_HEADER);
         return Objects.nonNull(authHeader) && authHeader.startsWith("Bearer ");
