@@ -6,6 +6,8 @@ import com.myrctc.auth_service.user.UserEntity;
 import com.myrctc.auth_service.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService{
     @NonNull
     @Override
     public Optional<UserDto> getUserByEmail(@NonNull final Email email) {
-        return userRepository.findUserEntitiesByEmail(email)
+        return userRepository.findUserEntitiesByEmail(email.email())
                 .map(this::convertUserEntityToUserDto);
     }
 
@@ -36,6 +38,7 @@ public class UserServiceImpl implements UserService{
 //      password is deliberately ignored here
         return UserDto.builder()
                 .name(userEntity.getName())
+                .hashedPassword(userEntity.getPassword())
                 .surname(userEntity.getSurname())
                 .age(userEntity.getAge())
                 .email(new Email(userEntity.getEmail()))
@@ -51,5 +54,10 @@ public class UserServiceImpl implements UserService{
                 .age(userDto.getAge())
                 .email(userDto.getEmail().email())
                 .build();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(@NonNull final String email) throws UsernameNotFoundException {
+        return getUserByEmail(new Email(email)).orElseThrow(() -> new UsernameNotFoundException(email));
     }
 }
