@@ -1,0 +1,21 @@
+Test Email,Expected Response Status
+@dc.com,400
+.username@dc.com,400
+username.@dc.com,400
+user..name@dc.com,400
+user name@dc.com,400
+user@@dc.com,400
+user[name]@dc.com,400
+user;name@dc.com,400
+user\name@dc.com,400
+"user,name@dc.com",400
+a@marvel.com,201
+123@marvel.com,201
+user+tag@marvel.com,201
+user_name@marvel.com,201
+user-name@marvel.com,201
+user&name@marvel.com,201
+user*name@marvel.com,201
+first.last@marvel.com,201
+a.b.c.d@marvel.com,201
+a+b.c_d-e&f*g@marvel.com,201
