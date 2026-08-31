@@ -1,4 +1,4 @@
-package com.myrctc.auth_service.auth;
+package com.myrctc.auth_service.auth.controller;
 
 import com.myrctc.auth_service.auth.token.JwtResponse;
 import com.myrctc.auth_service.auth.token.Token;
@@ -8,6 +8,7 @@ import com.myrctc.auth_service.user.UserDto;
 import com.myrctc.auth_service.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,8 +28,9 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(@NonNull final @RequestBody UserDto userDto){
-        return userService.registerUser(userDto);
+    public ResponseEntity<UserDto> register(@NonNull final @RequestBody UserDto userDto){
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.registerUser(userDto));
     }
 
     @PostMapping("/login")
@@ -36,7 +38,7 @@ public class AuthController {
     public JwtResponse login(@NonNull final @RequestBody LoginRequest loginRequest){
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.email(),
+                        loginRequest.email().email(),
                         loginRequest.password()
                 )
         );

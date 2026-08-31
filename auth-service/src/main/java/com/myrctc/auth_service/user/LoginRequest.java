@@ -3,5 +3,5 @@ package com.myrctc.auth_service.user;
 import lombok.Builder;
 
 @Builder
-public record LoginRequest(String email, String password) {
+public record LoginRequest(Email email, String password) {
 }

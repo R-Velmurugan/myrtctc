@@ -3,6 +3,7 @@ package com.myrctc.auth_service.user.service;
 import com.myrctc.auth_service.user.Email;
 import com.myrctc.auth_service.user.UserDto;
 import com.myrctc.auth_service.user.UserEntity;
+import com.myrctc.auth_service.user.exception.UserNameAlreadyInUse;
 import com.myrctc.auth_service.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -29,6 +30,9 @@ public class UserServiceImpl implements UserService{
     @NonNull
     @Override
     public UserDto registerUser(@NonNull final UserDto userDto) {
+        if(getUserByEmail(userDto.getEmail()).isPresent()){
+            throw new UserNameAlreadyInUse("User already exists");
+        }
         UserEntity userEntity = userRepository.save(convertUserDtoToUserEntity(userDto));
         return convertUserEntityToUserDto(userEntity); //to remove the password
     }
