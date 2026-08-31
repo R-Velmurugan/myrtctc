@@ -79,7 +79,7 @@ public class LoginIntegrationTest {
     @ParameterizedTest(name = "Login should fail for email: {0}, password: {1}")
     @CsvSource({
             "charles.xavier@marvel.com, wrongPassword",
-            "jean.grey@marvel.com, notThePhoenix"
+            "meredith.grey@marvel.com, notThePhoenix"
     })
     void shouldFailToLoginForWrongCredentials(String email, String password) {
         ResponseEntity<JwtResponse> response = restClient.post()
