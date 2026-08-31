@@ -4,7 +4,6 @@ import com.myrctc.auth_service.auth.token.JwtResponse;
 import com.myrctc.auth_service.container_config.PostgresIntegrationTest;
 import com.myrctc.auth_service.user.Email;
 import com.myrctc.auth_service.user.LoginRequest;
-import com.myrctc.auth_service.user.UserDto;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.client.RestClient;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -29,14 +27,15 @@ public class LoginIntegrationTest {
     private int port;
     private RestClient restClient;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    /*@Autowired
+    private JdbcTemplate jdbcTemplate;*/
 
     @BeforeAll
     void init(){
         restClient = restClientBuilder.baseUrl(String.format("http://localhost:%d", port)).build();
 
-        ResponseEntity<String> response = restClient.post()
+//        Uncomment if running this alone. This user is already created in Registration test
+        /*ResponseEntity<String> response = restClient.post()
                 .uri("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(UserDto.builder()
@@ -54,7 +53,7 @@ public class LoginIntegrationTest {
                 .isEqualTo(HttpStatus.CREATED);
 
         assertThat(jdbcTemplate.queryForObject("select count(*) from users", Integer.class))
-                .isEqualTo(1);
+                .isEqualTo(1);*/
     }
 
     @DisplayName("Should login with proper credentials")
