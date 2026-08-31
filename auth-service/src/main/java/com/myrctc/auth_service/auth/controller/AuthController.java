@@ -38,7 +38,7 @@ public class AuthController {
     public JwtResponse login(@NonNull final @RequestBody LoginRequest loginRequest){
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.email(),
+                        loginRequest.email().email(),
                         loginRequest.password()
                 )
         );
