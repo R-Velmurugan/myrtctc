@@ -34,4 +34,11 @@ public class StationController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(stationService.getMatchingStations(partialStationCode));
     }
+
+    @GetMapping("/station")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<StationDto> getStation (@NonNull final @RequestParam StationCode stationCode) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(stationService.getStation(stationCode));
+    }
 }
