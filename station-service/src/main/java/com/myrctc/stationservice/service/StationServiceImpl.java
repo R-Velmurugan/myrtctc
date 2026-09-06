@@ -42,6 +42,16 @@ public class StationServiceImpl implements StationService {
                 .orElseThrow(() -> new InvalidStationCodeException(stationCode.getStationCode()));
     }
 
+    @Override
+    @NonNull
+    public StationDto updateStation(@NonNull final StationDto stationDto) {
+        Station station = stationRepository.findById(stationDto.stationCode().getStationCode())
+                .orElseThrow(() -> new InvalidStationCodeException(stationDto.stationCode().getStationCode()));
+        station = updateStationUsingStationDto(stationDto, station);
+
+        return convertStationEntityToDto(stationRepository.save(station));
+    }
+
     @NonNull
     private Station convertStationDtoToEntity(@NonNull final StationDto stationDto) {
         return Station.builder()
@@ -55,6 +65,14 @@ public class StationServiceImpl implements StationService {
         return StationDto.builder()
                 .stationCode(new StationCode(station.getStationCode()))
                 .stationName(station.getStationName())
+                .build();
+    }
+
+    @NonNull
+    private Station updateStationUsingStationDto(@NonNull final StationDto station, @NonNull final Station stationEntity) {
+        return Station.builder()
+                .stationCode(stationEntity.getStationCode())
+                .stationName(station.stationName())
                 .build();
     }
 }

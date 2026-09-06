@@ -13,4 +13,6 @@ public interface StationService {
     List<StationDto> getMatchingStations(@NonNull final String partialStationCode);
     @NonNull
     StationDto getStation(@NonNull final StationCode stationCode);
+    @NonNull
+    StationDto updateStation(@NonNull final StationDto stationDto);
 }
