@@ -8,11 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +36,12 @@ public class StationController {
     public ResponseEntity<StationDto> getStation (@NonNull final @RequestParam StationCode stationCode) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(stationService.getStation(stationCode));
+    }
+
+    @PutMapping("/station")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<StationDto> updateStation(@NonNull final @RequestBody StationDto stationDto) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(stationService.updateStation(stationDto));
     }
 }
