@@ -1,0 +1,83 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - /login
+                  - /register
+
+        - id: auth-service-openapi
+          uri: http://localhost:8081
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - /auth-service/api
+          filters:
+            - name: RewritePath
+              args:
+                regexp: /auth-service/api
+                replacement: /api
+
+        - id: station-service
+          uri: http://localhost:8082
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - /station/**
+          filters:
+            - JwtAuth
+
+        - id: station-service-openapi
+          uri: http://localhost:8082
+          predicates:
+            - name: Path
+              args:
+                patterns:
+                  - /station-service/api
+          filters:
+            - name: RewritePath
+              args:
+                regexp: /station-service/api
+                replacement: /api
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+             - "http://localhost:8080"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+             - "*"
+            allowCredentials: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Station Service
+        url: /station-service/api
+      - name: Auth Service
+        url: /auth-service/api
+myrctc:
+  auth:
+    token:
+      secret: d06ba61c0b19410d145e10b53e813af4
+
+
+
+

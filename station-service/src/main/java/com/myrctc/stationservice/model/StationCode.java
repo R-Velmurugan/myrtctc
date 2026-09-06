@@ -1,10 +1,11 @@
 package com.myrctc.stationservice.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.myrctc.stationservice.exception.InvalidStationCodeException;
 
 import java.util.Objects;
 
-public record StationCode(String stationCode) {
+public record StationCode(@JsonValue String stationCode) {
     public String getStationCode() {
         return stationCode;
     }
