@@ -19,8 +19,7 @@ public class StationController {
     @PostMapping("/station")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<StationDto> createStation (@NonNull final @RequestBody StationDto stationDto) {
-        stationService.createStation(stationDto);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(stationDto);
+                .body(stationService.createStation(stationDto));
     }
 }
