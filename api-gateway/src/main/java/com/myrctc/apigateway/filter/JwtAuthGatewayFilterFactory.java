@@ -1,7 +1,6 @@
 package com.myrctc.apigateway.filter;
 
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,7 @@ import java.util.Objects;
 //and looks for that Bean.
 public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthGatewayFilterFactory.EmptyConfigToSatisfyContract> {
     private final JwtAuthService jwtAuthService;
-    public record EmptyConfigToSatisfyContract() {};
+    public record EmptyConfigToSatisfyContract() {}
 
     JwtAuthGatewayFilterFactory(JwtAuthService jwtAuthService) {
         super(EmptyConfigToSatisfyContract.class);
