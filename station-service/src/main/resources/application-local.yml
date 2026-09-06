@@ -25,3 +25,6 @@ springdoc:
 
 server:
   port: 8082
+myrctc:
+  gateway:
+    url: http://localhost:8080
