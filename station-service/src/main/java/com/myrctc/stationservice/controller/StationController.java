@@ -44,4 +44,11 @@ public class StationController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(stationService.updateStation(stationDto));
     }
+
+    @DeleteMapping("/station")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<Boolean> deleteStation(@NonNull final StationCode stationCode) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(stationService.deleteStation(stationCode));
+    }
 }

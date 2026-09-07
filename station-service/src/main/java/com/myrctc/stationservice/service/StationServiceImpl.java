@@ -52,6 +52,12 @@ public class StationServiceImpl implements StationService {
         return convertStationEntityToDto(stationRepository.save(station));
     }
 
+    @Override
+    public boolean deleteStation(@NonNull final StationCode stationCode) {
+        stationRepository.deleteById(stationCode.getStationCode());
+        return !stationRepository.existsById(stationCode.getStationCode());
+    }
+
     @NonNull
     private Station convertStationDtoToEntity(@NonNull final StationDto stationDto) {
         return Station.builder()
