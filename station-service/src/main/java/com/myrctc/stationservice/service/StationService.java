@@ -15,4 +15,5 @@ public interface StationService {
     StationDto getStation(@NonNull final StationCode stationCode);
     @NonNull
     StationDto updateStation(@NonNull final StationDto stationDto);
+    boolean deleteStation(@NonNull final StationCode stationCode);
 }
