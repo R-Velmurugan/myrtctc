@@ -18,6 +18,8 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+    create-schemas: true
+    default-schema: station-schema
 
 springdoc:
   api-docs:

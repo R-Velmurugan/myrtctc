@@ -24,11 +24,11 @@ public class StationController {
                 .body(stationService.createStation(stationDto));
     }
 
-    @GetMapping("/station/search")
+    @GetMapping("/station/search/name")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<List<StationDto>> searchStationsByCode (@NonNull final @RequestParam String partialStationCode) {
+    public ResponseEntity<List<StationDto>> searchByStationName (@NonNull final @RequestParam String stationName) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(stationService.getMatchingStations(partialStationCode));
+                .body(stationService.getStation(stationName));
     }
 
     @GetMapping("/station")

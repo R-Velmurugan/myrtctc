@@ -32,6 +32,13 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!--redis-->
+        <dependency>
+            <groupId>com.redis.om</groupId>
+            <artifactId>redis-om-spring</artifactId>
+            <version>1.0.9</version>
+        </dependency>
+
         <!-- Database & Flyway -->
         <dependency>
             <groupId>org.flywaydb</groupId>
