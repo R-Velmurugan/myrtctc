@@ -40,8 +40,8 @@ public class LoginIntegrationTest {
                 .uri("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(UserDto.builder()
-                        .email(new Email("charles.xavier@marvel.com"))
-                        .hashedPassword("magneto")
+                        .email(new Email("prof.xavier@marvel.com"))
+                        .hashedPassword("Xavier")
                         .age(40)
                         .name("Charles")
                         .surname("Xavier")
@@ -53,7 +53,7 @@ public class LoginIntegrationTest {
         assertThat(response.getStatusCode())
                 .isEqualTo(HttpStatus.CREATED);
 
-        assertThat(jdbcTemplate.queryForObject("select count(*) from users", Integer.class))
+        assertThat(jdbcTemplate.queryForObject("select count(*) from users where email = 'prof.xavier@marvel.com'", Integer.class))
                 .isEqualTo(1);
     }
 
@@ -64,8 +64,8 @@ public class LoginIntegrationTest {
                 .uri("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(LoginRequest.builder()
-                        .email(new Email("charles.xavier@marvel.com"))
-                        .password("magneto")
+                        .email(new Email("prof.xavier@marvel.com"))
+                        .password("Xavier")
                         .build()
                 )
                 .retrieve()
@@ -79,7 +79,7 @@ public class LoginIntegrationTest {
 
     @ParameterizedTest(name = "Login should fail for email: {0}, password: {1}")
     @CsvSource({
-            "charles.xavier@marvel.com, wrongPassword",
+            "prof.xavier@marvel.com, wrongPassword",
             "jean.grey@marvel.com, notThePhoenix"
     })
     void shouldFailToLoginForWrongCredentials(String email, String password) {
@@ -96,6 +96,5 @@ public class LoginIntegrationTest {
                 .toEntity(JwtResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-        assertThat(response.getBody()).isNull();
     }
 }

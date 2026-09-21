@@ -1,10 +1,11 @@
 package com.myrctc.stationservice.service;
 
 import com.myrctc.stationservice.entity.Station;
-import com.myrctc.stationservice.exception.InvalidSearch;
 import com.myrctc.stationservice.exception.InvalidStationCodeException;
 import com.myrctc.stationservice.model.StationCode;
 import com.myrctc.stationservice.model.dto.StationDto;
+import com.myrctc.stationservice.redis.StationDocument;
+import com.myrctc.stationservice.redis.StationNameRepository;
 import com.myrctc.stationservice.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -17,6 +18,7 @@ import java.util.List;
 public class StationServiceImpl implements StationService {
 
     private final StationRepository stationRepository;
+    private final StationNameRepository stationNameRepository;
 
     @Override
     @NonNull
@@ -27,19 +29,30 @@ public class StationServiceImpl implements StationService {
 
     @Override
     @NonNull
-    public List<StationDto> getMatchingStations(@NonNull final String partialStationCode) {
-        if(partialStationCode.chars().anyMatch(Character::isDigit)) throw new InvalidSearch(partialStationCode);
-        return stationRepository.findByStationCodeContainingIgnoreCase(partialStationCode).stream()
-                .map(this::convertStationEntityToDto)
-                .toList();
-    }
-
-    @Override
-    @NonNull
     public StationDto getStation(@NonNull final StationCode stationCode) {
         return stationRepository.findById(stationCode.getStationCode())
                 .map(this::convertStationEntityToDto)
                 .orElseThrow(() -> new InvalidStationCodeException(stationCode.getStationCode()));
+    }
+
+    @Override
+    @NonNull
+    public List<StationDto> getStation(@NonNull final String stationName) {
+        final String lowerCaseName = stationName.trim().toLowerCase();
+        final String searchQuery = buildRedisSearchQuery(lowerCaseName);
+
+        return stationNameRepository.searchByFuzzyAndInfix(String.format("@stationName:%s", searchQuery))
+                .stream()
+                .map(this::convertStationDocumentToDto)
+                .toList();
+    }
+
+    @NonNull
+    private String buildRedisSearchQuery(@NonNull final String term) {
+        if (term.length() < 4) {
+            return String.format("*%s*", term);
+        }
+        return String.format("(*%1$s* | %%%1$s%%)", term);
     }
 
     @Override
@@ -58,6 +71,13 @@ public class StationServiceImpl implements StationService {
         return !stationRepository.existsById(stationCode.getStationCode());
     }
 
+    @NonNull
+    private StationDto convertStationDocumentToDto(@NonNull final StationDocument stationDocument) {
+        return StationDto.builder()
+                .stationCode(StationCode.of(stationDocument.getStationCode()))
+                .stationName(stationDocument.getStationName())
+                .build();
+    }
     @NonNull
     private Station convertStationDtoToEntity(@NonNull final StationDto stationDto) {
         return Station.builder()
