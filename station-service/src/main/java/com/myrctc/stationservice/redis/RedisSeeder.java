@@ -4,10 +4,7 @@ import com.myrctc.stationservice.repository.StationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.UnifiedJedis;
-import redis.clients.jedis.exceptions.JedisException;
 
 import java.util.List;
 
