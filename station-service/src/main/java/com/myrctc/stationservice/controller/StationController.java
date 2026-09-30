@@ -31,7 +31,7 @@ public class StationController {
                 .body(stationService.getStation(stationName));
     }
 
-    @GetMapping("/station")
+    @GetMapping("/station/search/code")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<StationDto> getStation (@NonNull final @RequestParam StationCode stationCode) {
         return ResponseEntity.status(HttpStatus.OK)

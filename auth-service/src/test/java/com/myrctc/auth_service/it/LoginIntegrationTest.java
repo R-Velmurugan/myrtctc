@@ -1,7 +1,7 @@
 package com.myrctc.auth_service.it;
 
 import com.myrctc.auth_service.auth.token.JwtResponse;
-import com.myrctc.auth_service.container_config.PostgresIntegrationTest;
+import com.myrctc.testconfig.postgres.IntegrationTest;
 import com.myrctc.auth_service.user.Email;
 import com.myrctc.auth_service.user.LoginRequest;
 import com.myrctc.auth_service.user.UserDto;
@@ -19,7 +19,7 @@ import org.springframework.web.client.RestClient;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@PostgresIntegrationTest
+@IntegrationTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LoginIntegrationTest {
     @Autowired

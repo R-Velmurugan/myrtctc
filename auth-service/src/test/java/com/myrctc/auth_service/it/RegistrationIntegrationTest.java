@@ -1,8 +1,8 @@
 package com.myrctc.auth_service.it;
 
-import com.myrctc.auth_service.container_config.PostgresIntegrationTest;
 import com.myrctc.auth_service.user.Email;
 import com.myrctc.auth_service.user.UserDto;
+import com.myrctc.testconfig.postgres.IntegrationTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestClient;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@PostgresIntegrationTest
+@IntegrationTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RegistrationIntegrationTest {
     @Autowired
